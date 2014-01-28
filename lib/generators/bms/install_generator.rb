@@ -5,9 +5,9 @@ module Bms
     source_root File.expand_path('../templates', __FILE__)
 
     def base_prepare
-      git :init
-      git add: '.'
-      git commit: '-m Init commit'
+      #git :init
+      #git add: '.'
+      #git commit: '-m Init commit'
 
       gem 'haml-rails'
       gem 'html2haml'
@@ -67,14 +67,12 @@ module Bms
       copy_file 'config/locales/kaminary.yml', 'config/locales/kaminary.yml'
       copy_file 'app/controllers/application_controller.rb', 'app/controllers/application_controller.rb', force: true
       copy_file 'app/helpers/application_helper.rb', 'app/helpers/application_helper.rb', force: true
+      copy_file 'app/helpers/path_with_alias.rb', 'app/helpers/path_with_alias.rb'
 
       application do
         "config.time_zone = 'Ekaterinburg'"
         "config.i18n.default_locale = :ru"
       end
-
-      git add: '.'
-      git commit: '-m Base prepare complete'
 
     end
 
@@ -85,6 +83,8 @@ module Bms
 
       generate 'controller', 'Pages'
       copy_file 'app/controllers/pages_controller.rb', 'app/controllers/pages_controller.rb', force: true
+      run('rm app/assets/javascripts/pages.js.coffee')
+      run('rm app/assets/stylesheets/pages.css.scss')
 
       generate 'model', 'Page title:string text:text purpose:string show_in_menu:boolean menu:string meta:text title_of_window:string ancestry:string sort:integer'
       copy_file 'db/migrate/add_ancestry_to_page.rb', "db/migrate/#{Time.now.strftime("%Y%m%d%H%M%S").to_i + 1}_add_ancestry_to_page.rb"
@@ -106,17 +106,25 @@ module Bms
 
       copy_file 'tasks/fill_pages.rake', 'lib/tasks/fill_pages.rake'
       rake 'db:fill_pages'
+    end
 
-      git add: '.'
-      git commit: '-m Page generate complete'
+    def javascript
+      directory 'app/assets/javascripts/lib', 'app/assets/javascripts/lib'
+      directory 'app/assets/javascripts/ckeditor', 'app/assets/javascripts/ckeditor'
+      copy_file 'app/assets/javascripts/app.js.coffee', 'app/assets/javascripts/app.js.coffee'
+      directory 'app/assets/stylesheets/lib', 'app/assets/stylesheets/lib'
+      directory 'app/assets/images/fancybox', 'app/assets/images/fancybox'
+      directory 'app/assets/images/ui', 'app/assets/images/ui'
     end
 
     def other_modules
       generate 'bms:news' if yes?('Would you like to install module News? (y/n)')
-
-      git add: '.'
-      git commit: '-m News generate complete'
+      generate 'bms:slider' if yes?('Would you like to install module Slider? (y/n)')
+      generate 'bms:reviews' if yes?('Would you like to install module Review? (y/n)')
+      generate 'bms:gallery' if yes?('Would you like to install module Gallery? (y/n)')
+      generate 'bms:feedback' if yes?('Would you like to install module Feedback? (y/n)')
     end
 
   end
+
 end

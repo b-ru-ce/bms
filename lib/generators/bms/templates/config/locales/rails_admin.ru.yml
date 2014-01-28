@@ -6,7 +6,58 @@ ru:
       my_config: 'Общие настройки'
       role: 'Роли'
       article: 'Новости'
+      slide: 'Слайдер'
+      review: 'Отзывы'
+      photo_gallery: 'Фотогалерея'
+      photo: 'Фотографии'
+      feedback: 'Обратная связь'
     attributes:
+      photo_gallery:
+        id: "№"
+        title: 'Заголовок'
+        photos: 'Фотографии'
+        sort: "№ по порядку"
+        title_of_window: 'Заголовок окна'
+        created_at: "Создание"
+        updated_at: "Обновление"
+      feedback:
+        id: "№"
+        name: 'Имя'
+        phone: 'Телефон'
+        email: 'E-mail'
+        theme: 'Тема'
+        text: 'Текст'
+        created_at: "Создание"
+        updated_at: "Обновление"
+      photo:
+        id: "№"
+        photo_gallery: 'Фотогалерея'
+        image: 'Изображение'
+        description: 'Подпись'
+        main: 'Главная фотография'
+        sort: "№ по порядку"
+        created_at: "Создание"
+        updated_at: "Обновление"
+      review:
+        id: "№"
+        name: "Имя"
+        desc: "Подпись"
+        short_text: 'Короткий текст на главной'
+        text: 'Полный текст'
+        show_on_main: 'Показывать на главной'
+        image: 'Фотография'
+        sort: "№ по порядку"
+        created_at: "Создание"
+        updated_at: "Обновление"
+      slide:
+        id: "№"
+        title: "Заголовок"
+        text: "Текст"
+        image: 'Изображение'
+        url: 'Ссылка'
+        sort: "№ по порядку"
+        created_at: "Создание"
+        updated_at: "Обновление"
       my_config:
         id: "№"
         key: 'Ключ'
