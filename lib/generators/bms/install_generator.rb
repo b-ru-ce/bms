@@ -69,10 +69,9 @@ module Bms
       copy_file 'app/helpers/application_helper.rb', 'app/helpers/application_helper.rb', force: true
       copy_file 'app/helpers/path_with_alias.rb', 'app/helpers/path_with_alias.rb'
 
-      application do
-        "config.time_zone = 'Ekaterinburg'"
-        "config.i18n.default_locale = :ru"
-      end
+      application "config.time_zone = 'Ekaterinburg'"
+      application "config.i18n.default_locale = :ru"
+      application "config.action_controller.include_all_helpers = false"
 
     end
 
@@ -91,8 +90,8 @@ module Bms
       rake 'db:migrate'
       copy_file 'app/models/page.rb', 'app/models/page.rb', force: true
 
-      copy_file 'app/views/layouts/application.html.haml', 'app/views/layouts/application.html.haml'
-      run('rm app/views/layouts/application.html.erb')
+      copy_file 'app/views/layouts/application.html.erb', 'app/views/layouts/application.html.erb', force: true
+      copy_file 'app/views/layouts/_breadcrumbs.html.haml', 'app/views/layouts/_breadcrumbs.html.haml'
       copy_file 'app/views/layouts/menu/_menu.html.haml', 'app/views/layouts/menu/_menu.html.haml'
       copy_file 'app/views/layouts/menu/_menu_wrapper.html.haml', 'app/views/layouts/menu/_menu_wrapper.html.haml'
       copy_file 'app/views/pages/home.html.haml', 'app/views/pages/home.html.haml'
@@ -123,6 +122,7 @@ module Bms
       generate 'bms:reviews' if yes?('Would you like to install module Review? (y/n)')
       generate 'bms:gallery' if yes?('Would you like to install module Gallery? (y/n)')
       generate 'bms:feedback' if yes?('Would you like to install module Feedback? (y/n)')
+      generate 'bms:catalog' if yes?('Would you like to install module Catalog? (y/n)')
     end
 
   end
