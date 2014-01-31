@@ -42,8 +42,8 @@ module Bms
 
       generate 'kaminari:views', 'default'
       generate 'devise:views'
-
       run('for file in app/views/devise/**/*.erb; do html2haml -e $file ${file%erb}haml && rm $file; done')
+      copy_file 'app/views/devise/new.html.haml', 'app/views/devise/sessions/new.html.haml', force: true
 
       generate 'model', 'MyConfig key:string key_ru:string value:text'
       generate 'model', 'Role name:string'
@@ -123,6 +123,8 @@ module Bms
       generate 'bms:gallery' if yes?('Would you like to install module Gallery? (y/n)')
       generate 'bms:feedback' if yes?('Would you like to install module Feedback? (y/n)')
       generate 'bms:catalog' if yes?('Would you like to install module Catalog? (y/n)')
+      generate 'bms:portfolio' if yes?('Would you like to install module Portfolio? (y/n)')
+      generate 'bms:service' if yes?('Would you like to install module Service? (y/n)')
     end
 
   end
