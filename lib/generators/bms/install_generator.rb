@@ -13,6 +13,7 @@ module Bms
       gem 'html2haml'
       gem 'rails_admin'
       gem 'cancan'
+      gem 'unicode_utils'
       run('bundle install')
 
       generate 'rails_admin:install'
@@ -35,6 +36,8 @@ module Bms
         gem 'annotate'
         gem 'populator'
         gem 'faker'
+        gem 'capistrano'
+        gem 'rvm-capistrano'
       end
       run('bundle install')
       generate 'annotate:install'
@@ -55,11 +58,14 @@ module Bms
       copy_file 'app/models/role.rb', 'app/models/role.rb', force: true
       copy_file 'app/models/user.rb', 'app/models/user.rb', force: true
 
+      copy_file 'tasks/change_base.rake', 'lib/tasks/change_base.rake'
       copy_file 'tasks/base_fill.rake', 'lib/tasks/base_fill.rake'
       rake 'db:fill_my_config'
       rake 'db:fill_users'
+      run('rm lib/tasks/base_fill.rake')
 
       copy_file 'config/initializers/rails_admin.rb', 'config/initializers/rails_admin.rb', force: true
+      copy_file 'config/initializers/ckeditor.rb', 'config/initializers/ckeditor.rb', force: true
       copy_file 'config/initializers/string.rb', 'config/initializers/string.rb'
       copy_file 'config/locales/ru.yml', 'config/locales/ru.yml'
       copy_file 'config/locales/devise.ru.yml', 'config/locales/devise.ru.yml'
@@ -105,15 +111,22 @@ module Bms
 
       copy_file 'tasks/fill_pages.rake', 'lib/tasks/fill_pages.rake'
       rake 'db:fill_pages'
+      run('rm lib/tasks/fill_pages.rake')
+
     end
 
     def javascript
       directory 'app/assets/javascripts/lib', 'app/assets/javascripts/lib'
       directory 'app/assets/javascripts/ckeditor', 'app/assets/javascripts/ckeditor'
       copy_file 'app/assets/javascripts/app.js.coffee', 'app/assets/javascripts/app.js.coffee'
+      gsub_file 'app/assets/javascripts/application.js', '//= require_tree .', "//= require lib/jquery-ui-1.10.3.custom.min\n//= require lib/jquery.fancybox-1.3.4\n//= require lib/jquery.form.min\n//= require lib/jquery.validate.min\n//= require app"
+
       directory 'app/assets/stylesheets/lib', 'app/assets/stylesheets/lib'
+      gsub_file 'app/assets/stylesheets/application.css', " *= require_self\n *= require_tree .", " *= require lib/jquery-ui-1.10.3.custom.min\n *= require lib/jquery.fancybox-1.3.4\n *= require lib/validate\n *= require lib/loading\n *= require_self"
+
       directory 'app/assets/images/fancybox', 'app/assets/images/fancybox'
       directory 'app/assets/images/ui', 'app/assets/images/ui'
+      copy_file 'app/assets/images/loading.gif', 'app/assets/images/loading.gif'
     end
 
     def other_modules

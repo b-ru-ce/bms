@@ -12,6 +12,7 @@ module Bms
       route "get 'contacts' => 'feedbacks#new'"
 
       copy_file 'app/assets/javascripts/feedback.js.coffee'
+      inject_into_file 'app/assets/javascripts/application.js', "\n//= require feedback", before: "\n//= require app"
       inject_into_file 'app/assets/javascripts/app.js.coffee', "  feedback()\n", after: "ready = ->\n"
       inject_into_file 'app/views/layouts/application.html.erb', "\n  <%= render 'layouts/dialogs' %>\n", before: '</body>'
       copy_file 'app/views/layouts/_dialogs.html.haml', 'app/views/layouts/_dialogs.html.haml'
@@ -32,6 +33,7 @@ module Bms
 
       copy_file 'tasks/fill_feedback.rake', 'lib/tasks/fill_feedback.rake'
       rake 'db:fill_feedback'
+      run('rm lib/tasks/fill_feedback.rake')
 
       copy_file 'config/initializers/_rails_admin_feedback.rb', 'vendor/bms/initializers/_rails_admin_feedback.rb'
       inject_into_file 'config/initializers/rails_admin.rb', File.read('vendor/bms/initializers/_rails_admin_feedback.rb').force_encoding('ASCII-8BIT'), after: "RailsAdmin.config do |config|\n"
