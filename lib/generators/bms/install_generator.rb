@@ -5,9 +5,10 @@ module Bms
     source_root File.expand_path('../templates', __FILE__)
 
     def base_prepare
-      #git :init
-      #git add: '.'
-      #git commit: '-m Init commit'
+      git :init
+      inject_into_file '.gitignore', "/public/system/dragonfly/development\n", after: "# Ignore all logfiles and tempfiles.\n"
+      git add: '.'
+      git commit: '-m "Init commit"'
 
       gem 'haml-rails'
       gem 'html2haml'
@@ -79,6 +80,18 @@ module Bms
       application "config.i18n.default_locale = :ru"
       application "config.action_controller.include_all_helpers = false"
 
+      application "config.exceptions_app = self.routes"
+
+      route "get '/404' => 'errors#not_found'"
+      route "get '/422' => 'errors#server_error'"
+      route "get '/500' => 'errors#server_error'"
+      generate 'controller', 'Errors'
+      copy_file 'app/controllers/errors_controller.rb', 'app/controllers/errors_controller.rb', force: true
+      copy_file 'app/helpers/errors_helper.rb', 'app/helpers/errors_helper.rb', force: true
+      run('rm app/assets/javascripts/errors.js.coffee')
+      run('rm app/assets/stylesheets/errors.css.scss')
+      copy_file 'app/views/errors/not_found.html.haml', 'app/views/errors/not_found.html.haml'
+      copy_file 'app/views/errors/server_error.html.haml', 'app/views/errors/server_error.html.haml'
     end
 
     def pages

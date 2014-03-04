@@ -17,11 +17,14 @@ module Bms
       copy_file 'config/deploy.rb', 'config/deploy.rb', force: true
 
       git add: "."
-      git commit: "-m Commit before deploy"
+      git commit: '-m "Commit before deploy"'
 
-      run('cap deploy:first_setup')
-      run('cap deploy:change_host_file')
-      run('cap deploy')
+      if yes?('Did you change domain and application name in deploy.rb? (y/n)')
+        run('cap deploy:first_setup')
+        run('cap deploy:change_host_file')
+        run('cap deploy')
+      end
+
 
     end
 
