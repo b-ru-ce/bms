@@ -15,8 +15,11 @@ module Bms
       gem 'rails_admin'
       gem 'cancan'
       gem 'unicode_utils'
+      gem 'devise'
       run('bundle install')
 
+      generate 'devise:install'
+      generate 'devise User'
       generate 'rails_admin:install'
       rake 'db:migrate'
 
