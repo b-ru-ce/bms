@@ -12,18 +12,20 @@ module Bms
 
       gem 'haml-rails'
       gem 'html2haml'
+      gem 'devise'
       gem 'rails_admin'
       gem 'cancan'
       gem 'unicode_utils'
-      gem 'devise'
       run('bundle install')
 
       generate 'devise:install'
-      generate 'devise User'
-      generate 'rails_admin:install'
+      generate 'devise', 'User'
+      copy_file 'db/migrate/devise_create_users.rb', "db/migrate/#{Time.now.strftime("%Y%m%d%H%M%S").to_i + 1}_devise_create_users.rb"
       rake 'db:migrate'
 
-      gem 'dragonfly', '~> 1.0.0'
+      generate 'rails_admin:install'
+
+      gem 'dragonfly', '~> 1.0.7'
       gem 'ckeditor'
       run('bundle install')
 
