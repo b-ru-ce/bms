@@ -21,7 +21,7 @@ module Bms
       copy_file 'app/views/my_mailer/feedback.html.haml', 'app/views/my_mailer/feedback.html.haml'
 
       copy_file 'config/_mailer_config.rb', 'vendor/bms/initializers/_mailer_config.rb'
-      application File.read('vendor/bms/initialoylizers/_mailer_config.rb'), env: "development"
+      application File.read('vendor/bms/initializers/_mailer_config.rb'), env: "development"
       application File.read('vendor/bms/initializers/_mailer_config.rb'), env: "production"
 
       generate 'model', 'Feedback name:text phone:text email:text theme:text text:text'
